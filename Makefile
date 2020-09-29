@@ -1,17 +1,25 @@
+TARGET = webserver
+EXENAME = webserver
+
 CC = gcc
 CFLAGS = -Wall -Wextra
-DEPS = webserver.o http.o server.o init.o
+DEPS = http.o server.o init.o
+OBJS = $(TARGET).o
 
-webserver: webserver.o http.o server.o init.o
-	$(CC) $(CFLAGS) -o $@ $^
+all: $(TARGET)
 
-webserver.o: webserver.c
-	$(CC) $(CLAGS) -o $@ -c $<
+install: $(TARGET) clean
+
+$(TARGET): $(OBJS) $(DEPS)
+	$(CC) $(CFLAGS) -o $(EXENAME) $^
 
 %.o: %.c %.h
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f *.o
+	rm -rf *.o
 distclean: clean
-	rm -f webserver *.out
+	rm -f $(EXENAME)
+
+.PHONY: clean
+
